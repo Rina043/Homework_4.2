@@ -3,6 +3,7 @@ import ru.netology.domain.AirRoute;
 import ru.netology.repository.AirRouteRepository;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class AirRouteManager {
     private AirRouteRepository repository;
@@ -15,13 +16,13 @@ public class AirRouteManager {
         repository.save(item);
     }
 
-    public AirRoute[] findAll(String airportFrom, String airportTo) {
+    public AirRoute[] findAllPriceSort(String airportFrom, String airportTo) {
         AirRoute[] result = new AirRoute[0];
-        for (AirRoute airRoute : repository.findAll()) {
-            if (airRoute.getAirportFrom().equalsIgnoreCase(airportFrom) && airRoute.getAirportTo().equalsIgnoreCase(airportTo)) {
+        for (AirRoute item : repository.findAll()) {
+            if (item.getAirportFrom().equalsIgnoreCase(airportFrom) && item.getAirportTo().equalsIgnoreCase(airportTo)) {
                 AirRoute[] tmp = new AirRoute[result.length + 1];
                 System.arraycopy(result, 0, tmp, 0, result.length);
-                tmp[tmp.length - 1] = airRoute;
+                tmp[tmp.length - 1] = item;
                 result = tmp;
             }
         }
@@ -29,4 +30,17 @@ public class AirRouteManager {
         return result;
     }
 
+    public AirRoute[] findAllTimeSort(String airportFrom, String airportTo, Comparator<AirRoute> comparator) {
+        AirRoute[] result = new AirRoute[0];
+        for (AirRoute item : repository.findAll()) {
+            if (item.getAirportFrom().equalsIgnoreCase(airportFrom) && item.getAirportTo().equalsIgnoreCase(airportTo)) {
+                AirRoute[] tmp = new AirRoute[result.length + 1];
+                System.arraycopy(result, 0, tmp, 0, result.length);
+                tmp[tmp.length - 1] = item;
+                result = tmp;
+            }
+        }
+        Arrays.sort(result, comparator);
+        return result;
+    }
 }
